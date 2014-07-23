@@ -1085,13 +1085,13 @@ try:
         from google.appengine.api import apiproxy_stub_map
         if apiproxy_stub_map.apiproxy.GetStub('urlfetch') is None:
             raise ImportError  # Bail out; we're not actually running on App Engine.
-        from google.appengine.api.urlfetch import fetch
+        from google.appengine.api.urlfetch import fetch, get_default_fetch_deadline
         from google.appengine.api.urlfetch import InvalidURLError
     except (ImportError, AttributeError):
         from google3.apphosting.api import apiproxy_stub_map
         if apiproxy_stub_map.apiproxy.GetStub('urlfetch') is None:
             raise ImportError  # Bail out; we're not actually running on App Engine.
-        from google3.apphosting.api.urlfetch import fetch
+        from google3.apphosting.api.urlfetch import fetch, get_default_fetch_deadline
         from google3.apphosting.api.urlfetch import InvalidURLError
 
     def _new_fixed_fetch(validate_certificate):
@@ -1099,7 +1099,7 @@ try:
                         allow_truncated=False, follow_redirects=True,
                         deadline=None):
             if deadline is None:
-                deadline = socket.getdefaulttimeout() or 5
+                deadline = get_default_fetch_deadline() or 5
             return fetch(url, payload=payload, method=method, headers=headers,
                          allow_truncated=allow_truncated,
                          follow_redirects=follow_redirects, deadline=deadline,
